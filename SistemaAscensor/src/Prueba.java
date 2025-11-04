@@ -1,14 +1,12 @@
 public class Prueba {
     public static void main(String[] args) {
         // Crear pisos para el edificio y los botones del ascensor
-        int pisos = 16; // 16; pero se usarán 15 en el bucle
+        int pisos = 15;
         Piso[] pisoArray = new Piso[pisos];
-        // i = 1 para no iniciar con un piso 0
-        // Uso de < en vez de <= para evitar usar el piso 16
-        for (int i = 1; i < pisos; i++) {
-            if (i == 1) {
+        for (int i = 0; i < pisos; i++) {
+            if (i == 0) {
                 pisoArray[i] = new Piso(1, false, true);
-            } else if (i == 15) {
+            } else if (i == 14) {
                 pisoArray[i] = new Piso(15, false, true);
             } else {
                 pisoArray[i] = new Piso(i, false, false);
@@ -16,8 +14,8 @@ public class Prueba {
         }
 
         // Prueba de pisos para asegurar que se crearon con sus números correctos
-        System.out.println(pisoArray[1].numeroPiso()); // Imprime 1
-        System.out.println(pisoArray[15].numeroPiso()); // Imprime 15
+        System.out.println(pisoArray[0].numeroPiso()); // Imprime 1
+        System.out.println(pisoArray[14].numeroPiso()); // Imprime 15
 
     }
 }

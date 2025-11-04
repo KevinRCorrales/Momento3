@@ -7,23 +7,26 @@ public class EjecutarAscensor {
         int solicitud; // Inicializar variable para almacenar lecturas
 
         // Crear pisos para el edificio y los botones del ascensor
-        int pisos = 16; // 16; pero se usarán 15 en el bucle
+        int pisos = 15;
         Piso[] pisoArray = new Piso[pisos];
-        // i = 1 para no iniciar con un piso 0
-        // Uso de < en vez de <= para evitar usar el piso 16
-        for (int i = 1; i < pisos; i++) {
-            if (i == 1) {
+        for (int i = 0; i < pisos; i++) {
+            if (i == 0) {
                 pisoArray[i] = new Piso(1, false, true);
-            } else if (i == 15) {
+            } else if (i == 14) {
                 pisoArray[i] = new Piso(15, false, true);
             } else {
                 pisoArray[i] = new Piso(i, false, false);
             }
         }
+
+        // Control del ascensor
+        SistemaControl objSistemaControl = new SistemaControl(pisoArray);
+
         // Crear usuario y simular un piso existente
         Usuario objUsuario1 = new Usuario(1);
-        boolean usuarioPrimerPiso = pisoArray[objUsuario1.getPisoActual()].esPrimerPiso();
-        boolean usuarioUltimoPiso = pisoArray[objUsuario1.getPisoActual()].esUltimoPiso();
+        // - 1 para acceder al elemento correcto del array que va de 0 a 14
+        boolean usuarioPrimerPiso = pisoArray[objUsuario1.getPisoActual() - 1].esPrimerPiso();
+        boolean usuarioUltimoPiso = pisoArray[objUsuario1.getPisoActual() - 1].esUltimoPiso();
         while(true){
             System.out.println("Usted desea:");
             if (usuarioPrimerPiso){
@@ -40,6 +43,7 @@ public class EjecutarAscensor {
             if (solicitud == 0) {
                 System.exit(0);
             } else if (solicitud == 1 && usuarioPrimerPiso) {
+                // Presionar el botón de subir
                 System.out.println();
             } else if (solicitud == 1 && usuarioUltimoPiso) {
                 System.out.println();
