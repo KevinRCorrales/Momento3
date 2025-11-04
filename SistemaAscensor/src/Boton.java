@@ -1,18 +1,20 @@
 public class Boton {
-    private boolean iluminacion;
-    public Boton(boolean iluminacion) {
-        this.iluminacion = iluminacion;
+    private boolean esPresionado;
+    public Boton(boolean esPresionado) {
+        this.esPresionado = esPresionado;
     }
 
-    public void encender() {
-        iluminacion = true;
+    public void presionar() {
+        System.out.println("Luz del botón encendida");
+        System.out.println("Timbre de aviso");
+        esPresionado = true;
     }
 
-    public void apagar() {
-        iluminacion = false;
+    public boolean senialPresionado() {
+        return esPresionado;
     }
 
-    public boolean estado() {
-        return iluminacion;
+    public void apagarPresionado() {
+        esPresionado = false;
     }
 }

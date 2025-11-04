@@ -1,23 +1,21 @@
 public class Ascensor {
     private int pisoAscensor;
-    private BotonPiso[] botonPiso;
+    private boolean enMovimiento;
 
-    public Ascensor(BotonPiso[] botonPiso, int pisoAscensor) {
-        this.botonPiso = botonPiso;
+    public Ascensor(int pisoAscensor, boolean enMovimiento) {
         this.pisoAscensor = pisoAscensor;
+        this.enMovimiento = enMovimiento;
     }
 
     public int getPisoAscensor() {
         return pisoAscensor;
     }
 
-    public int bajarPiso() {
-        pisoAscensor--;
-        return pisoAscensor;
+    public void recorrerPisos(int diferencia) {
+        pisoAscensor += diferencia;
     }
 
-    public int subirPiso() {
-        pisoAscensor++;
-        return pisoAscensor;
+    public boolean getEnMovimiento() {
+        return enMovimiento;
     }
 }
