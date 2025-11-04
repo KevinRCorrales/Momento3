@@ -18,4 +18,8 @@ public class Ascensor {
     public boolean getEnMovimiento() {
         return enMovimiento;
     }
+
+    public void setEnMovimiento(boolean enMovimiento) {
+        this.enMovimiento = enMovimiento;
+    }
 }

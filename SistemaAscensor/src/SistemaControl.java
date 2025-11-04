@@ -12,31 +12,43 @@ public class SistemaControl {
     }
 
     public void llamarAscensor() {
-
+        int pisoAscensor = ascensor.getPisoAscensor();
+        int[] diferencias = new int[pisoLlamadas.length];
+        for (int i = 0; i < pisoLlamadas.length; i++) {
+            diferencias[i]  = pisoLlamadas[i] - pisoAscensor;
+        }
+        if (!ascensor.getEnMovimiento()) {
+            // Iniciar movimiento hacia el piso de la primera solicitud
+            ascensor.setEnMovimiento(true);
+            ascensor.recorrerPisos(diferencias[0]);
+            System.out.println("Ascensor ahora en el piso: " + ascensor.getPisoAscensor());
+        }
+        // System.out.println(diferencias[0] + " " + diferencias[1] + " " + diferencias[2]); (linea de debugeo)
     }
 
     public void menuAscensor() {
         Scanner sc = new Scanner(System.in);
         int solicitud; // Inicializar variable para almacenar lecturas
 
-        // Crear pisos para el edificio
+        // Crear pisos para el edificio con sus botones
         int pisos = 15;
         Piso[] pisoArray = new Piso[pisos];
         for (int i = 0; i < pisos; i++) {
             if (i == 0) {
-                pisoArray[i] = new Piso(1, false, true);
+                pisoArray[i] = new Piso(1, false, true, new Boton[]{new BotonPiso(false)});
             } else if (i == 14) {
-                pisoArray[i] = new Piso(15, false, true);
-            } else {
-                pisoArray[i] = new Piso(i, false, false);
+                pisoArray[i] = new Piso(15, false, true, new Boton[]{new BotonPiso(false)});
+            } else { // 2 botones para los pisos intermedios (subida y bajada)
+                pisoArray[i] = new Piso(i, false, false, new Boton[]{new BotonPiso(false), new BotonPiso(false)});
             }
         }
         // Usar el primer usuario para mí
-        boolean usuarioPrimerPiso = pisoArray[usuarios[0].getPisoActual() - 1].esPrimerPiso();
-        boolean usuarioUltimoPiso = pisoArray[usuarios[0].getPisoActual() - 1].esUltimoPiso();
-        // Crear botón de piso apagado
-        Boton botonSubir = new BotonPiso(false);
-        Boton botonBajar  = new BotonPiso(false);
+        Piso pisoUsuario = pisoArray[usuarios[0].getPisoActual() -1];
+        boolean usuarioPrimerPiso = pisoUsuario.esPrimerPiso();
+        boolean usuarioUltimoPiso = pisoUsuario.esUltimoPiso();
+        // Crear botones disponibles
+        Boton botonSubir = pisoUsuario.botonSubir();
+        Boton botonBajar = pisoUsuario.botonBajar();
         while(true){
             System.out.println("Piso actual del ascensor: " + ascensor.getPisoAscensor());
             System.out.println("Usted desea:");
