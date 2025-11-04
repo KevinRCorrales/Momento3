@@ -17,7 +17,7 @@ public class Piso {
         return esUltimo;
     }
 
-    public boolean esPrimeroPiso() {
+    public boolean esPrimerPiso() {
         return esPrimero;
     }
 }
