@@ -19,11 +19,17 @@ public class EjecutarAscensor {
             }
         }
 
-        // Control del ascensor
-        SistemaControl objSistemaControl = new SistemaControl(pisoArray);
-
-        // Crear usuario y simular un piso existente
+        // Crear usuarios y simular un piso existente para cada uno
         Usuario objUsuario1 = new Usuario(1);
+        // objUsuario2 y objUsuario3 simulan otros usuarios que solicitaron el ascensor más arriba que objUsuario1
+        Usuario objUsuario2 = new Usuario(7);
+        Usuario objUsuario3 = new Usuario(15);
+
+        // Control del ascensor
+        int[] pisoLlamadas = {objUsuario1.getPisoActual(), objUsuario2.getPisoActual(), objUsuario3.getPisoActual()};
+        System.out.println(pisoLlamadas.length);
+        SistemaControl objSistemaControl = new SistemaControl(pisoArray, pisoLlamadas);
+
         // - 1 para acceder al elemento correcto del array que va de 0 a 14
         boolean usuarioPrimerPiso = pisoArray[objUsuario1.getPisoActual() - 1].esPrimerPiso();
         boolean usuarioUltimoPiso = pisoArray[objUsuario1.getPisoActual() - 1].esUltimoPiso();
@@ -43,8 +49,7 @@ public class EjecutarAscensor {
             if (solicitud == 0) {
                 System.exit(0);
             } else if (solicitud == 1 && usuarioPrimerPiso) {
-                // Presionar el botón de subir
-                System.out.println();
+                objSistemaControl.llamarAscensor();
             } else if (solicitud == 1 && usuarioUltimoPiso) {
                 System.out.println();
             } else if ((usuarioUltimoPiso || usuarioPrimerPiso) && solicitud > 1) { // Evitar solicitudes de tipo 2 a usuarios en primer o último piso
@@ -57,6 +62,5 @@ public class EjecutarAscensor {
                 System.out.println("Solicitud incorrecta");
             }
         }
-
     }
 }
