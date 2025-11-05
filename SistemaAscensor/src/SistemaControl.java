@@ -15,31 +15,29 @@ public class SistemaControl {
 
     public void llamarAscensor() {
         int pisoAscensor = ascensor.getPisoAscensor();
-        int[] diferencias = new int[pisoLlamadas.length];
-        for (int i = 0; i < pisoLlamadas.length; i++) {
-            diferencias[i]  = pisoLlamadas[i] - pisoAscensor;
-        }
         if (!ascensor.getEnMovimiento()) {
             // Iniciar movimiento hacia el piso de la primera solicitud
             ascensor.setEnMovimiento(true);
-            ascensor.recorrerPisos(diferencias[0]);
+            ascensor.recorrerPisos();
             System.out.println("Usuario ahora en el piso: " + usuarios[0].getPisoActual());
+        } else { // Si el ascensor ya está en movimiento
+            // Verificar si hay solicitudes hacia la misma dirección
         }
-        System.out.println(diferencias[0] + " " + diferencias[1] + " " + diferencias[2]); // (linea de debugeo)
+        //System.out.println(diferencias[0] + " " + diferencias[1] + " " + diferencias[2]); // (linea de debugeo)
     }
 
     public void menuAscensor() {
         Scanner sc = new Scanner(System.in);
         int solicitud; // Inicializar variable para almacenar lecturas
 
-        // Usar el primer usuario para mí
-        Piso pisoUsuario = pisos[usuarios[0].getPisoActual() -1];
-        boolean usuarioPrimerPiso = pisoUsuario.esPrimerPiso();
-        boolean usuarioUltimoPiso = pisoUsuario.esUltimoPiso();
-        // Crear botones disponibles
-        Boton botonSubir = pisoUsuario.botonSubir();
-        Boton botonBajar = pisoUsuario.botonBajar();
         while(true){
+            // Usar el primer usuario para mí
+            Piso pisoUsuario = pisos[usuarios[0].getPisoActual().getNumero() -1];
+            boolean usuarioPrimerPiso = pisoUsuario.esPrimerPiso();
+            boolean usuarioUltimoPiso = pisoUsuario.esUltimoPiso();
+            // Crear botones disponibles
+            Boton botonSubir = pisoUsuario.botonSubir();
+            Boton botonBajar = pisoUsuario.botonBajar();
             System.out.println("Piso actual del ascensor: " + ascensor.getPisoAscensor());
             System.out.println("Usted desea:");
             if (usuarioPrimerPiso){

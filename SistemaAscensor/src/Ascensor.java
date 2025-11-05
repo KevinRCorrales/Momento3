@@ -19,20 +19,18 @@ public class Ascensor {
         return pisoAscensor;
     }
 
-    public void recorrerPisos(int diferencia) {
+    public void recorrerPisos() {
         System.out.println("Entra al ascensor antes de que cierre...");
         for (BotonAscensor boton : botones) {
             System.out.println(boton.getPiso());
         }
-        System.out.println("\nIngrese el piso al que quiere ir: ");
-        Scanner sc = new Scanner(System.in);
-        int pisoDestino = sc.nextInt();
-        botones[pisoDestino - 1].presionar();
+        System.out.println("\nIngrese el piso al que quiere ir: " + usuario.getPisoDestino());
+        Piso pisoDestino = usuario.getPisoDestino();
+        botones[pisoDestino.getNumero() - 1].presionar();
         puerta.cerrar();
         System.out.println("Iniciando recorrido...");
-        pisoAscensor += diferencia;
+        this.pisoAscensor = pisoDestino.getNumero();
         System.out.println("Recorrido finalizado...");
-        usuario.setPisoActual(pisoAscensor);
         System.out.println("Abriendo puerta...");
         puerta.abrir();
         System.out.println("Puede salir...");

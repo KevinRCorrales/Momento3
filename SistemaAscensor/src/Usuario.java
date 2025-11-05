@@ -1,15 +1,25 @@
 public class Usuario {
-    private int pisoActual;
+    private Piso pisoActual;
+    private Piso pisoDestino;
 
-    public Usuario(int pisoActual) {
+    public Usuario(Piso pisoActual, Piso pisoDestino) {
         this.pisoActual = pisoActual;
+        this.pisoDestino = pisoDestino;
     }
 
-    public int getPisoActual() {
+    public Piso getPisoActual() {
         return pisoActual;
     }
 
-    public void setPisoActual(int pisoActual) {
+    public void setPisoActual(Piso pisoActual) {
         this.pisoActual = pisoActual;
+    }
+
+    public Piso getPisoDestino() {
+        return pisoDestino;
+    }
+
+    public void setPisoDestino(Piso pisoDestino) {
+        this.pisoDestino = pisoDestino;
     }
 }

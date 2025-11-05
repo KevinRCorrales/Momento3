@@ -21,10 +21,10 @@ public class EjecutarAscensor {
             botones[i] = new BotonAscensor(false, pisoArray[i]);
         }
         // Crear usuarios y simular un piso existente para cada uno
-        Usuario objUsuario1 = new Usuario(1);
+        Usuario objUsuario1 = new Usuario(pisoArray[0], pisoArray[13]);
         // objUsuario2 y objUsuario3 simulan otros usuarios que solicitaron el ascensor más arriba que objUsuario1
-        Usuario objUsuario2 = new Usuario(7);
-        Usuario objUsuario3 = new Usuario(15);
+        Usuario objUsuario2 = new Usuario(pisoArray[8], pisoArray[2]);
+        Usuario objUsuario3 = new Usuario(pisoArray[14], pisoArray[4]);
         Usuario[] usuarios = {objUsuario1, objUsuario2, objUsuario3};
 
         // Crear ascensor y puerta
@@ -32,7 +32,7 @@ public class EjecutarAscensor {
         Ascensor ascensor = new Ascensor(7, false, puerta, usuarios[0], botones); // Simular un piso cualquiera para el objeto
 
         // Control del ascensor
-        int[] pisoLlamadas = {objUsuario1.getPisoActual(), objUsuario2.getPisoActual(), objUsuario3.getPisoActual()};
+        int[] pisoLlamadas = {objUsuario1.getPisoActual().getNumero(), objUsuario2.getPisoActual().getNumero(), objUsuario3.getPisoActual().getNumero()};
         SistemaControl objSistemaControl = new SistemaControl(pisoLlamadas, usuarios, ascensor, pisoArray);
         objSistemaControl.menuAscensor();
     }
