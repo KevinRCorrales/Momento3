@@ -8,4 +8,8 @@ public class Usuario {
     public int getPisoActual() {
         return pisoActual;
     }
+
+    public void setPisoActual(int pisoActual) {
+        this.pisoActual = pisoActual;
+    }
 }

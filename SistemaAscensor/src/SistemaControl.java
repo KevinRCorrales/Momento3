@@ -4,11 +4,13 @@ public class SistemaControl {
     private int[] pisoLlamadas;
     private Usuario[] usuarios;
     private Ascensor ascensor;
+    private Piso[] pisos;
 
-    public SistemaControl(int[] pisoLlamadas, Usuario[] usuarios) {
-        ascensor = new Ascensor(7, false); // Simular un piso cualquiera para el objeto
+    public SistemaControl(int[] pisoLlamadas, Usuario[] usuarios, Ascensor ascensor, Piso[] pisos) {
         this.pisoLlamadas = pisoLlamadas;
         this.usuarios = usuarios;
+        this.ascensor = ascensor;
+        this.pisos = pisos;
     }
 
     public void llamarAscensor() {
@@ -22,28 +24,17 @@ public class SistemaControl {
             ascensor.setEnMovimiento(true);
             ascensor.recorrerPisos(diferencias[0]);
             System.out.println("Ascensor ahora en el piso: " + ascensor.getPisoAscensor());
+            System.out.println("Usuario ahora en el piso: " + usuarios[0].getPisoActual());
         }
-        // System.out.println(diferencias[0] + " " + diferencias[1] + " " + diferencias[2]); (linea de debugeo)
+        System.out.println(diferencias[0] + " " + diferencias[1] + " " + diferencias[2]); // (linea de debugeo)
     }
 
     public void menuAscensor() {
         Scanner sc = new Scanner(System.in);
         int solicitud; // Inicializar variable para almacenar lecturas
 
-        // Crear pisos para el edificio con sus botones
-        int pisos = 15;
-        Piso[] pisoArray = new Piso[pisos];
-        for (int i = 0; i < pisos; i++) {
-            if (i == 0) {
-                pisoArray[i] = new Piso(1, false, true, new Boton[]{new BotonPiso(false)});
-            } else if (i == 14) {
-                pisoArray[i] = new Piso(15, false, true, new Boton[]{new BotonPiso(false)});
-            } else { // 2 botones para los pisos intermedios (subida y bajada)
-                pisoArray[i] = new Piso(i, false, false, new Boton[]{new BotonPiso(false), new BotonPiso(false)});
-            }
-        }
         // Usar el primer usuario para mí
-        Piso pisoUsuario = pisoArray[usuarios[0].getPisoActual() -1];
+        Piso pisoUsuario = pisos[usuarios[0].getPisoActual() -1];
         boolean usuarioPrimerPiso = pisoUsuario.esPrimerPiso();
         boolean usuarioUltimoPiso = pisoUsuario.esUltimoPiso();
         // Crear botones disponibles
