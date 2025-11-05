@@ -23,7 +23,6 @@ public class SistemaControl {
             // Iniciar movimiento hacia el piso de la primera solicitud
             ascensor.setEnMovimiento(true);
             ascensor.recorrerPisos(diferencias[0]);
-            System.out.println("Ascensor ahora en el piso: " + ascensor.getPisoAscensor());
             System.out.println("Usuario ahora en el piso: " + usuarios[0].getPisoActual());
         }
         System.out.println(diferencias[0] + " " + diferencias[1] + " " + diferencias[2]); // (linea de debugeo)

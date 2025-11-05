@@ -5,14 +5,16 @@ public class EjecutarAscensor {
         // Crear pisos para el edificio con sus botones
         int pisos = 15;
         Piso[] pisoArray = new Piso[pisos];
-        Boton[] botones = new Boton[pisos];
+        BotonAscensor[] botones = new BotonAscensor[pisos];
         for (int i = 0; i < pisos; i++) {
+            // Iniciar todos los pisos de manera igual
+            pisoArray[i] = new Piso(i + 1, false, false, new Boton[]{new BotonPiso(false)});
             if (i == 0) {
-                pisoArray[i] = new Piso(1, false, true, new Boton[]{new BotonPiso(false)});
+                pisoArray[i].setEsPrimero(true);
             } else if (i == 14) {
-                pisoArray[i] = new Piso(15, false, true, new Boton[]{new BotonPiso(false)});
+                pisoArray[i].setEsUltimo(true);
             } else { // 2 botones para los pisos intermedios (subida y bajada)
-                pisoArray[i] = new Piso(i, false, false, new Boton[]{new BotonPiso(false), new BotonPiso(false)});
+                pisoArray[i].setBotones(new Boton[]{new BotonPiso(false), new BotonPiso(false)});
             }
         }
         for (int i = 0; i < pisos; i++) {
@@ -31,7 +33,6 @@ public class EjecutarAscensor {
 
         // Control del ascensor
         int[] pisoLlamadas = {objUsuario1.getPisoActual(), objUsuario2.getPisoActual(), objUsuario3.getPisoActual()};
-        System.out.println(pisoLlamadas.length);
         SistemaControl objSistemaControl = new SistemaControl(pisoLlamadas, usuarios, ascensor, pisoArray);
         objSistemaControl.menuAscensor();
     }

@@ -1,7 +1,11 @@
 public class BotonAscensor extends Boton {
-    Piso numeroPiso;
-    public BotonAscensor(boolean esPresionado, Piso numeroPiso) {
+    private Piso piso;
+    public BotonAscensor(boolean esPresionado, Piso piso) {
         super(esPresionado);
-        this.numeroPiso = numeroPiso;
+        this.piso = piso;
+    }
+
+    public Piso getPiso() {
+        return piso;
     }
 }

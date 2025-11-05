@@ -11,16 +11,24 @@ public class Piso {
         this.botones = botones;
     }
 
-    public int numeroPiso() {
-        return numero;
-    }
-
     public boolean esUltimoPiso() {
         return esUltimo;
     }
 
     public boolean esPrimerPiso() {
         return esPrimero;
+    }
+
+    public void setEsPrimero(boolean esPrimero) {
+        this.esPrimero = esPrimero;
+    }
+
+    public void setEsUltimo(boolean esUltimo) {
+        this.esUltimo = esUltimo;
+    }
+
+    public void setBotones(Boton[] botones) {
+        this.botones = botones;
     }
 
     public Boton botonSubir() {
@@ -39,5 +47,10 @@ public class Piso {
             return botones[1];
         }
         return null; // Tampoco válido
+    }
+
+    @Override
+    public String toString() {
+        return "Piso: " + numero;
     }
 }
