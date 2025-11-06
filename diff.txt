@@ -1,0 +1,227 @@
+diff --git a/SistemaAscensor/src/Ascensor.java b/SistemaAscensor/src/Ascensor.java
+index e1d4e51..0017d3e 100644
+--- a/SistemaAscensor/src/Ascensor.java
++++ b/SistemaAscensor/src/Ascensor.java
+@@ -1,41 +1,49 @@
+ import java.util.Scanner;
+ 
+ public class Ascensor {
+-    private int pisoAscensor;
++    private Piso pisoAscensor;
++    private Piso[] pisosEdificio;
+     private boolean enMovimiento;
+     private Puerta puerta;
+     private Usuario usuario;
+     private BotonAscensor[] botones;
++    private boolean subiendo;
+ 
+-    public Ascensor(int pisoAscensor, boolean enMovimiento, Puerta puerta, Usuario usuario, BotonAscensor[] botones) {
++    public Ascensor(Piso pisoAscensor, Piso[] pisosEdificio, boolean enMovimiento, Puerta puerta, Usuario usuario, BotonAscensor[] botones, boolean subiendo) {
+         this.pisoAscensor = pisoAscensor;
++        this.pisosEdificio = pisosEdificio;
+         this.enMovimiento = enMovimiento;
+         this.puerta = puerta;
+         this.usuario = usuario;
+         this.botones = botones;
++        this.subiendo = subiendo;
+     }
+ 
+-    public int getPisoAscensor() {
++    public Piso getPisoAscensor() {
+         return pisoAscensor;
+     }
+ 
+     public void recorrerPisos() {
++        Scanner sc = new Scanner(System.in);
++        System.out.println("Atendiendo solicitud del usuario en el piso: " + usuario.getPisoActual());
+         System.out.println("Entra al ascensor antes de que cierre...");
+         for (BotonAscensor boton : botones) {
+             System.out.println(boton.getPiso());
+         }
+-        System.out.println("\nIngrese el piso al que quiere ir: " + usuario.getPisoDestino());
+-        Piso pisoDestino = usuario.getPisoDestino();
++        System.out.println("\nIngrese el piso al que quiere ir: ");
++        Piso pisoDestino = pisosEdificio[sc.nextInt() - 1];
+         botones[pisoDestino.getNumero() - 1].presionar();
+         puerta.cerrar();
+         System.out.println("Iniciando recorrido...");
+-        this.pisoAscensor = pisoDestino.getNumero();
++        pisoAscensor = pisoDestino;
+         System.out.println("Recorrido finalizado...");
+         System.out.println("Abriendo puerta...");
+         puerta.abrir();
+         System.out.println("Puede salir...");
+         puerta.cerrar();
+         usuario.setPisoActual(pisoDestino);
++        System.out.println("Usuario y ascensor ahora en el piso: " + usuario.getPisoActual().getNumero());
++        System.out.println("------Buscando siguiente usuario--------\n");
+     }
+ 
+     public boolean getEnMovimiento() {
+@@ -45,4 +53,25 @@ public class Ascensor {
+     public void setEnMovimiento(boolean enMovimiento) {
+         this.enMovimiento = enMovimiento;
+     }
++
++    public boolean getSubiendo() {
++        return subiendo;
++    }
++
++    public void setSubiendo(boolean subiendo) {
++        this.subiendo = subiendo;
++    }
++
++    public Usuario getUsuario() {
++        return usuario;
++    }
++
++    public void setUsuario(Usuario usuario) {
++        // Setter para definir el nuevo usuario en el que se basará la petición
++        this.usuario = usuario;
++    }
++
++    public void setPisoAscensor(Piso pisoAscensor) {
++        this.pisoAscensor = pisoAscensor;
++    }
+ }
+diff --git a/SistemaAscensor/src/BotonPiso.java b/SistemaAscensor/src/BotonPiso.java
+index 8c8f543..d0ab08a 100644
+--- a/SistemaAscensor/src/BotonPiso.java
++++ b/SistemaAscensor/src/BotonPiso.java
+@@ -2,4 +2,9 @@ public class BotonPiso extends Boton {
+     public BotonPiso(boolean esPresionado) {
+         super(esPresionado);
+     }
++
++    @Override
++    public void presionar() {
++        System.out.println("Solicitud recibida...");
++    }
+ }
+diff --git a/SistemaAscensor/src/EjecutarAscensor.java b/SistemaAscensor/src/EjecutarAscensor.java
+index c9f5143..6f10684 100644
+--- a/SistemaAscensor/src/EjecutarAscensor.java
++++ b/SistemaAscensor/src/EjecutarAscensor.java
+@@ -8,32 +8,29 @@ public class EjecutarAscensor {
+         BotonAscensor[] botones = new BotonAscensor[pisos];
+         for (int i = 0; i < pisos; i++) {
+             // Iniciar todos los pisos de manera igual
+-            pisoArray[i] = new Piso(i + 1, false, false, new Boton[]{new BotonPiso(false)});
++            pisoArray[i] = new Piso(i + 1, false, false, new BotonPiso(false));
+             if (i == 0) {
+                 pisoArray[i].setEsPrimero(true);
+             } else if (i == 14) {
+                 pisoArray[i].setEsUltimo(true);
+-            } else { // 2 botones para los pisos intermedios (subida y bajada)
+-                pisoArray[i].setBotones(new Boton[]{new BotonPiso(false), new BotonPiso(false)});
+             }
+         }
+         for (int i = 0; i < pisos; i++) {
+             botones[i] = new BotonAscensor(false, pisoArray[i]);
+         }
+         // Crear usuarios y simular un piso existente para cada uno
+-        Usuario objUsuario1 = new Usuario(pisoArray[0], pisoArray[13]);
++        Usuario objUsuario1 = new Usuario(pisoArray[0]);
+         // objUsuario2 y objUsuario3 simulan otros usuarios que solicitaron el ascensor más arriba que objUsuario1
+-        Usuario objUsuario2 = new Usuario(pisoArray[8], pisoArray[2]);
+-        Usuario objUsuario3 = new Usuario(pisoArray[14], pisoArray[4]);
++        Usuario objUsuario2 = new Usuario(pisoArray[8]);
++        Usuario objUsuario3 = new Usuario(pisoArray[14]);
+         Usuario[] usuarios = {objUsuario1, objUsuario2, objUsuario3};
+ 
+         // Crear ascensor y puerta
+         Puerta puerta = new Puerta(false);
+-        Ascensor ascensor = new Ascensor(7, false, puerta, usuarios[0], botones); // Simular un piso cualquiera para el objeto
++        Ascensor ascensor = new Ascensor(pisoArray[6], pisoArray, false, puerta, objUsuario1, botones, false); // Simular un piso cualquiera para el objeto
+ 
+         // Control del ascensor
+-        int[] pisoLlamadas = {objUsuario1.getPisoActual().getNumero(), objUsuario2.getPisoActual().getNumero(), objUsuario3.getPisoActual().getNumero()};
+-        SistemaControl objSistemaControl = new SistemaControl(pisoLlamadas, usuarios, ascensor, pisoArray);
+-        objSistemaControl.menuAscensor();
++        SistemaControl objSistemaControl = new SistemaControl(usuarios, ascensor);
++        objSistemaControl.ejecutar();
+     }
+ }
+diff --git a/SistemaAscensor/src/Piso.java b/SistemaAscensor/src/Piso.java
+index 38a7d8f..3497eb2 100644
+--- a/SistemaAscensor/src/Piso.java
++++ b/SistemaAscensor/src/Piso.java
+@@ -2,13 +2,13 @@ public class Piso {
+     private int numero;
+     private boolean esUltimo;
+     private boolean esPrimero;
+-    private Boton[] botones;
++    private Boton boton;
+ 
+-    public Piso(int numero, boolean esUltimo, boolean esPrimero, Boton[] botones) {
++    public Piso(int numero, boolean esUltimo, boolean esPrimero, Boton boton) {
+         this.numero = numero;
+         this.esUltimo = esUltimo;
+         this.esPrimero = esPrimero;
+-        this.botones = botones;
++        this.boton = boton;
+     }
+ 
+     public boolean esUltimoPiso() {
+@@ -27,26 +27,12 @@ public class Piso {
+         this.esUltimo = esUltimo;
+     }
+ 
+-    public void setBotones(Boton[] botones) {
+-        this.botones = botones;
++    public void setBoton(Boton boton) {
++        this.boton = boton;
+     }
+ 
+-    public Boton botonSubir() {
+-        if (esPrimero) {
+-            return botones[0];
+-        } else if (!esPrimero && !esUltimo) {
+-            return botones[1];
+-        }
+-        return null; // Retornar que el botón no es válido
+-    }
+-
+-    public Boton botonBajar() {
+-        if (esUltimo) {
+-            return botones[0];
+-        } else if (!esUltimo && !esPrimero) {
+-            return botones[1];
+-        }
+-        return null; // Tampoco válido
++    public void botonLlamar() {
++        boton.presionar();
+     }
+ 
+     public int getNumero() {
+diff --git a/SistemaAscensor/src/Usuario.java b/SistemaAscensor/src/Usuario.java
+index ed55cc3..dfac85c 100644
+--- a/SistemaAscensor/src/Usuario.java
++++ b/SistemaAscensor/src/Usuario.java
+@@ -1,10 +1,10 @@
+ public class Usuario {
+     private Piso pisoActual;
+-    private Piso pisoDestino;
+ 
+-    public Usuario(Piso pisoActual, Piso pisoDestino) {
++    public Usuario(Piso pisoActual) {
+         this.pisoActual = pisoActual;
+-        this.pisoDestino = pisoDestino;
++        // Generar llamada en el piso actual
++        pisoActual.botonLlamar();
+     }
+ 
+     public Piso getPisoActual() {
+@@ -14,12 +14,4 @@ public class Usuario {
+     public void setPisoActual(Piso pisoActual) {
+         this.pisoActual = pisoActual;
+     }
+-
+-    public Piso getPisoDestino() {
+-        return pisoDestino;
+-    }
+-
+-    public void setPisoDestino(Piso pisoDestino) {
+-        this.pisoDestino = pisoDestino;
+-    }
+ }

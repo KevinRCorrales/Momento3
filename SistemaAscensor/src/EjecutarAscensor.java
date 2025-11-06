@@ -8,32 +8,29 @@ public class EjecutarAscensor {
         BotonAscensor[] botones = new BotonAscensor[pisos];
         for (int i = 0; i < pisos; i++) {
             // Iniciar todos los pisos de manera igual
-            pisoArray[i] = new Piso(i + 1, false, false, new Boton[]{new BotonPiso(false)});
+            pisoArray[i] = new Piso(i + 1, false, false, new BotonPiso(false));
             if (i == 0) {
                 pisoArray[i].setEsPrimero(true);
             } else if (i == 14) {
                 pisoArray[i].setEsUltimo(true);
-            } else { // 2 botones para los pisos intermedios (subida y bajada)
-                pisoArray[i].setBotones(new Boton[]{new BotonPiso(false), new BotonPiso(false)});
             }
         }
         for (int i = 0; i < pisos; i++) {
             botones[i] = new BotonAscensor(false, pisoArray[i]);
         }
         // Crear usuarios y simular un piso existente para cada uno
-        Usuario objUsuario1 = new Usuario(pisoArray[0], pisoArray[13]);
+        Usuario objUsuario1 = new Usuario(pisoArray[0]);
         // objUsuario2 y objUsuario3 simulan otros usuarios que solicitaron el ascensor más arriba que objUsuario1
-        Usuario objUsuario2 = new Usuario(pisoArray[8], pisoArray[2]);
-        Usuario objUsuario3 = new Usuario(pisoArray[14], pisoArray[4]);
+        Usuario objUsuario2 = new Usuario(pisoArray[8]);
+        Usuario objUsuario3 = new Usuario(pisoArray[14]);
         Usuario[] usuarios = {objUsuario1, objUsuario2, objUsuario3};
 
         // Crear ascensor y puerta
         Puerta puerta = new Puerta(false);
-        Ascensor ascensor = new Ascensor(7, false, puerta, usuarios[0], botones); // Simular un piso cualquiera para el objeto
+        Ascensor ascensor = new Ascensor(pisoArray[6], pisoArray, false, puerta, objUsuario1, botones, false); // Simular un piso cualquiera para el objeto
 
         // Control del ascensor
-        int[] pisoLlamadas = {objUsuario1.getPisoActual().getNumero(), objUsuario2.getPisoActual().getNumero(), objUsuario3.getPisoActual().getNumero()};
-        SistemaControl objSistemaControl = new SistemaControl(pisoLlamadas, usuarios, ascensor, pisoArray);
-        objSistemaControl.menuAscensor();
+        SistemaControl objSistemaControl = new SistemaControl(usuarios, ascensor);
+        objSistemaControl.ejecutar();
     }
 }

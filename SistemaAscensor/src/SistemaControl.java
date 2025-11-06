@@ -1,76 +1,89 @@
-import java.util.Scanner;
-
 public class SistemaControl {
-    private int[] pisoLlamadas;
     private Usuario[] usuarios;
     private Ascensor ascensor;
-    private Piso[] pisos;
 
-    public SistemaControl(int[] pisoLlamadas, Usuario[] usuarios, Ascensor ascensor, Piso[] pisos) {
-        this.pisoLlamadas = pisoLlamadas;
+    public SistemaControl(Usuario[] usuarios, Ascensor ascensor) {
         this.usuarios = usuarios;
         this.ascensor = ascensor;
-        this.pisos = pisos;
     }
 
-    public void llamarAscensor() {
-        int pisoAscensor = ascensor.getPisoAscensor();
-        if (!ascensor.getEnMovimiento()) {
-            // Iniciar movimiento hacia el piso de la primera solicitud
-            ascensor.setEnMovimiento(true);
-            ascensor.recorrerPisos();
-            System.out.println("Usuario ahora en el piso: " + usuarios[0].getPisoActual());
-        } else { // Si el ascensor ya está en movimiento
-            // Verificar si hay solicitudes hacia la misma dirección
+    public void ejecutar() {
+        // Crear las llamadas de piso en el orden de cada usuario
+        int[] pisoLlamadas = new int[usuarios.length];
+
+        for (int i = 0; i < usuarios.length; i++) {
+            pisoLlamadas[i] = usuarios[i].getPisoActual().getNumero();
         }
-        //System.out.println(diferencias[0] + " " + diferencias[1] + " " + diferencias[2]); // (linea de debugeo)
+
+        // Comenzar el movimiento del ascensor con el primer usuario en la lista
+        Piso pisoInicialAscensor = ascensor.getPisoAscensor();
+        System.out.println("Ascensor en piso: " + pisoInicialAscensor.getNumero());
+        ascensor.setEnMovimiento(true);
+        Usuario usuarioActual = usuarios[0];
+        Piso pisoUsuarioActual = usuarioActual.getPisoActual();
+        // Ir al piso de dicho usuario
+        ascensor.setPisoAscensor(pisoUsuarioActual);
+        System.out.println("Ascensor en el piso del usuario...");
+        ascensor.setUsuario(usuarioActual);
+        ascensor.recorrerPisos();
+        pisoLlamadas[0] = 0; // Marcar como ya atendido
+
+        /*Continuar con los demás usuarios a partir del movimiento del ascensor
+        * Ya que el ascensor fue puesto en movimiento con el primer usuario, se verificará si hay más
+        * solicitudes y hacía que dirección fue el ascensor con el primer usuario, para definir
+        * la dirección a donde debe seguir el ascensor para mejorar la eficiencia, y que apenas termine
+        * dicha dirección, pueda invertirla y hacer un recorrido para quienes estaban en pisos aún no
+        * recorridos.*/
+
+        // Movimiento del ascensor
+        ascensor.setSubiendo(pisoUsuarioActual.getNumero() < usuarioActual.getPisoActual().getNumero());
+        boolean ascensorSubiendo = ascensor.getSubiendo();
+        // Pequeña verificación de si el ascensor si detectó si está subiendo o bajando de manera correcta
+        if (ascensorSubiendo) {
+            System.out.println("El ascensor está subiendo");
+        } else {
+            System.out.println("El ascensor está bajando");
+        }
+
+        if (pisoLlamadas.length == 1) {
+            System.out.println("No hay más solicitudes...");
+            //System.exit(0); // Salir de la ejecución sin errores
+        } else {
+            // Continuar si hay más llamadas
+            while (quedanSolicitudes(pisoLlamadas)) {
+                pisoInicialAscensor = ascensor.getPisoAscensor();
+                System.out.println("Ascensor en el piso: " + pisoInicialAscensor.getNumero());
+                if (ascensorSubiendo) {
+                    for (int i = 0; i < pisoLlamadas.length; i++) {
+                        if (pisoLlamadas[i] >= pisoInicialAscensor.getNumero() && pisoLlamadas[i] != 0) {
+                            ascensor.setUsuario(usuarios[i]);
+                            ascensor.recorrerPisos();
+                            pisoLlamadas[i] = 0;
+                        }
+                    }
+                    ascensor.setSubiendo(false); // después de subir cambiar la dirección
+                } else {
+                    for (int i = 0; i < pisoLlamadas.length; i++) {
+                        if (pisoLlamadas[i] <= pisoInicialAscensor.getNumero() && pisoLlamadas[i] != 0) {
+                            ascensor.setUsuario(usuarios[i]);
+                            ascensor.recorrerPisos();
+                            pisoLlamadas[i] = 0;
+                        }
+                    }
+                    ascensor.setSubiendo(true);
+                }
+            }
+        }
     }
 
-    public void menuAscensor() {
-        Scanner sc = new Scanner(System.in);
-        int solicitud; // Inicializar variable para almacenar lecturas
-
-        while(true){
-            // Usar el primer usuario para mí
-            Piso pisoUsuario = pisos[usuarios[0].getPisoActual().getNumero() -1];
-            boolean usuarioPrimerPiso = pisoUsuario.esPrimerPiso();
-            boolean usuarioUltimoPiso = pisoUsuario.esUltimoPiso();
-            // Crear botones disponibles
-            Boton botonSubir = pisoUsuario.botonSubir();
-            Boton botonBajar = pisoUsuario.botonBajar();
-            System.out.println("Piso actual del ascensor: " + ascensor.getPisoAscensor());
-            System.out.println("Usted desea:");
-            if (usuarioPrimerPiso){
-                System.out.println("1. Subir");
-            } else if (usuarioUltimoPiso) {
-                System.out.println("1. Bajar");
-            } else {
-                System.out.println("1. Subir");
-                System.out.println("2. Bajar");
-            }
-            System.out.println("0. Salir de la solicitud de ascensor.");
-            System.out.println("Ingrese la solicitud: ");
-            solicitud = sc.nextInt();
-            if (solicitud == 0) {
-                System.exit(0);
-            } else if (solicitud == 1 && usuarioPrimerPiso) {
-                botonSubir.presionar();
-            } else if (solicitud == 1 && usuarioUltimoPiso) {
-                botonBajar.presionar();
-            } else if ((usuarioUltimoPiso || usuarioPrimerPiso) && solicitud > 1) { // Evitar solicitudes de tipo 2 a usuarios en primer o último piso
-                System.out.println("Solicitud incorrecta");
-            } else if (solicitud == 1) { // Cuando el usuario está simplemente en un piso intermedio
-                botonSubir.presionar();
-            } else if (solicitud == 2) {
-                botonBajar.presionar();
-            } else {
-                System.out.println("Solicitud incorrecta");
-            }
-
-            // Ejecutar ascensor si la solicitud fue correcta
-            if (botonSubir.senialPresionado() || botonBajar.senialPresionado()) {
-                this.llamarAscensor();
+    public boolean quedanSolicitudes(int[] pisoLlamadas) {
+        for (int pisoLlamada : pisoLlamadas) {
+            if (pisoLlamada != 0) {
+                System.out.println("Aún hay solicitudes por atender...");
+                return true;
             }
         }
+        System.out.println("No hay más solicitudes...");
+        return false;
     }
 }

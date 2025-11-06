@@ -1,10 +1,10 @@
 public class Usuario {
     private Piso pisoActual;
-    private Piso pisoDestino;
 
-    public Usuario(Piso pisoActual, Piso pisoDestino) {
+    public Usuario(Piso pisoActual) {
         this.pisoActual = pisoActual;
-        this.pisoDestino = pisoDestino;
+        // Generar llamada en el piso actual
+        pisoActual.botonLlamar();
     }
 
     public Piso getPisoActual() {
@@ -13,13 +13,5 @@ public class Usuario {
 
     public void setPisoActual(Piso pisoActual) {
         this.pisoActual = pisoActual;
-    }
-
-    public Piso getPisoDestino() {
-        return pisoDestino;
-    }
-
-    public void setPisoDestino(Piso pisoDestino) {
-        this.pisoDestino = pisoDestino;
     }
 }
