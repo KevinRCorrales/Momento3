@@ -1,6 +1,6 @@
 public class BotonEmergencia extends Boton{
-    public BotonEmergencia(boolean esPresionado) {
-        super(esPresionado);
+    public BotonEmergencia(boolean esPresionado, boolean malEstado) {
+        super(esPresionado, malEstado);
     }
 
     @Override

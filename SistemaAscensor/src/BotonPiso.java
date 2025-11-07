@@ -1,6 +1,6 @@
 public class BotonPiso extends Boton {
-    public BotonPiso(boolean esPresionado) {
-        super(esPresionado);
+    public BotonPiso(boolean esPresionado, boolean malEstado) {
+        super(esPresionado, malEstado);
     }
 
     @Override

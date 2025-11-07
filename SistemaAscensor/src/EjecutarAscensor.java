@@ -6,14 +6,14 @@ public class EjecutarAscensor {
         BotonAscensor[] botones = new BotonAscensor[pisos];
         for (int i = 0; i < pisos; i++) {
             // Iniciar todos los pisos de manera igual
-            pisoArray[i] = new Piso(i + 1, new BotonPiso(false));
+            pisoArray[i] = new Piso(i + 1, new BotonPiso(false, false), new BotonPiso(false, false));
         }
         for (int i = 0; i < pisos; i++) {
-            botones[i] = new BotonAscensor(false, pisoArray[i]);
+            botones[i] = new BotonAscensor(false, false, pisoArray[i]);
         }
         // Crear botón de emergencia y de tiempo extra para el ascensor
-        BotonEmergencia botonEmergencia = new BotonEmergencia(false);
-        BotonTiempoPuertas botonTiempoPuertas = new BotonTiempoPuertas(false);
+        BotonEmergencia botonEmergencia = new BotonEmergencia(false, false);
+        BotonTiempoPuertas botonTiempoPuertas = new BotonTiempoPuertas(false, false);
 
         // Crear usuarios y simular un piso existente para cada uno
         Usuario objUsuario1 = new Usuario(pisoArray[0]);
@@ -23,7 +23,7 @@ public class EjecutarAscensor {
         Usuario[] usuarios = {objUsuario1, objUsuario2, objUsuario3};
 
         // Crear ascensor y puerta
-        Puerta puerta = new Puerta(false);
+        Puerta puerta = new Puerta(false, false);
         Ascensor ascensor = new Ascensor(pisoArray[6], pisoArray, false, puerta, objUsuario1, botones,
                 botonEmergencia, botonTiempoPuertas, false); // Simular un piso cualquiera para el objeto
 

@@ -4,7 +4,13 @@ public class Usuario {
     public Usuario(Piso pisoActual) {
         this.pisoActual = pisoActual;
         // Generar llamada en el piso actual
-        pisoActual.botonLlamar();
+        if (pisoActual.esPrimerPiso()) {
+            pisoActual.botonSubirLlamar();
+        } else if (pisoActual.esUltimoPiso()) {
+            pisoActual.botonBajarLlamar();
+        } else  {
+            pisoActual.botonSubirLlamar();
+        }
     }
 
     public Piso getPisoActual() {

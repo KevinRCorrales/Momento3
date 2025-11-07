@@ -1,18 +1,32 @@
 public class Piso {
     private int numero;
-    private Boton boton;
+    private Boton botonSubir;
+    private Boton botonBajar;
 
-    public Piso(int numero, Boton boton) {
+    public Piso(int numero, Boton botonSubir, Boton botonBajar) {
         this.numero = numero;
-        this.boton = boton;
+        this.botonSubir = botonSubir;
+        this.botonBajar = botonBajar;
     }
 
-    public void botonLlamar() {
-        boton.presionar();
+    public void botonSubirLlamar() {
+        botonSubir.presionar();
+    }
+
+    public void botonBajarLlamar() {
+        botonBajar.presionar();
     }
 
     public int getNumero() {
         return numero;
+    }
+
+    public boolean esPrimerPiso() {
+        return numero == 1;
+    }
+
+    public boolean esUltimoPiso() {
+        return numero == 15;
     }
 
     @Override

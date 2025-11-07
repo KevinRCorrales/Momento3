@@ -1,16 +1,11 @@
 public class BotonTiempoPuertas extends Boton{
-    public BotonTiempoPuertas(boolean esPresionado) {
-        super(esPresionado);
+    public BotonTiempoPuertas(boolean esPresionado, boolean malEstado) {
+        super(esPresionado, malEstado);
     }
 
     @Override
     public void presionar() {
-        System.out.println("Esperando más tiempo para cerrar...");
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
+        System.out.println("Se esperará más tiempo para cerrar...");
         esPresionado = true;
     }
 

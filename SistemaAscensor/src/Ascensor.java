@@ -50,6 +50,15 @@ public class Ascensor {
             } else {
                 Piso pisoDestino = pisosEdificio[ingreso - 1];
                 botones[pisoDestino.getNumero() - 1].presionar();
+                if (botonTiempoPuertas.senialPresionado()) {
+                    System.out.println("Esperando más tiempo para cerrar...");
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    botonTiempoPuertas.setEsPresionado(false);
+                }
                 puerta.cerrar();
                 System.out.println("Iniciando recorrido...");
                 pisoAscensor = pisoDestino;
@@ -99,8 +108,12 @@ public class Ascensor {
         return botonEmergencia;
     }
 
-    public Piso[] getPisosEdificio() {
-        return pisosEdificio;
+    public Boton getBotonTiempoPuertas() {
+        return botonTiempoPuertas;
+    }
+
+    public Boton[] getBotones() {
+        return botones;
     }
 
     public Puerta getPuerta() {

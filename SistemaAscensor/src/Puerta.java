@@ -1,8 +1,10 @@
 public class Puerta {
     private boolean abierta;
+    private boolean malEstado;
 
-    public Puerta(boolean abierta) {
+    public Puerta(boolean abierta, boolean malEstado) {
         this.abierta = abierta;
+        this.malEstado = malEstado;
     }
 
     public void abrir() {
@@ -15,7 +17,11 @@ public class Puerta {
         abierta = false;
     }
 
-    public boolean estaAbierta() {
-        return abierta;
+    public void setMalEstado(boolean malEstado) {
+        this.malEstado = malEstado;
+    }
+
+    public boolean getMalEstado() {
+        return malEstado;
     }
 }
