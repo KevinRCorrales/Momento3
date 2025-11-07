@@ -11,8 +11,9 @@ public class EjecutarAscensor {
         for (int i = 0; i < pisos; i++) {
             botones[i] = new BotonAscensor(false, pisoArray[i]);
         }
-        // Crear botón de emergencia para el ascensor
+        // Crear botón de emergencia y de tiempo extra para el ascensor
         BotonEmergencia botonEmergencia = new BotonEmergencia(false);
+        BotonTiempoPuertas botonTiempoPuertas = new BotonTiempoPuertas(false);
 
         // Crear usuarios y simular un piso existente para cada uno
         Usuario objUsuario1 = new Usuario(pisoArray[0]);
@@ -23,7 +24,8 @@ public class EjecutarAscensor {
 
         // Crear ascensor y puerta
         Puerta puerta = new Puerta(false);
-        Ascensor ascensor = new Ascensor(pisoArray[6], pisoArray, false, puerta, objUsuario1, botones, botonEmergencia, false); // Simular un piso cualquiera para el objeto
+        Ascensor ascensor = new Ascensor(pisoArray[6], pisoArray, false, puerta, objUsuario1, botones,
+                botonEmergencia, botonTiempoPuertas, false); // Simular un piso cualquiera para el objeto
 
         // Control del ascensor
         SistemaControl objSistemaControl = new SistemaControl(usuarios, ascensor);

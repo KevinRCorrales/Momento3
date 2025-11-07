@@ -1,5 +1,5 @@
 public class Boton {
-    private boolean esPresionado;
+    protected boolean esPresionado; // protected para permitir acceso en clases hijas
     public Boton(boolean esPresionado) {
         this.esPresionado = esPresionado;
     }
@@ -12,9 +12,5 @@ public class Boton {
 
     public boolean senialPresionado() {
         return esPresionado;
-    }
-
-    public void setEsPresionado(boolean esPresionado) {
-        this.esPresionado = esPresionado;
     }
 }

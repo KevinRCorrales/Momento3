@@ -6,7 +6,7 @@ public class BotonEmergencia extends Boton{
     @Override
     public void presionar() {
         System.out.println("DETENIENDO ASCENSOR Y AVISANDO AL EQUIPO DE SEGURIDAD!");
-        setEsPresionado(true);
+        esPresionado = true;
     }
 
     @Override

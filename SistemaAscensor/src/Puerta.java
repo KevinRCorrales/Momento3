@@ -6,10 +6,12 @@ public class Puerta {
     }
 
     public void abrir() {
+        System.out.println("Se ha abierto la puerta");
         abierta = true;
     }
 
     public void cerrar() {
+        System.out.println("Se ha cerrado la puerta");
         abierta = false;
     }
 

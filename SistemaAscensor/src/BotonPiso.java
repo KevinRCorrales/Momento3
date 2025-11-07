@@ -6,6 +6,6 @@ public class BotonPiso extends Boton {
     @Override
     public void presionar() {
         System.out.println("Solicitud recibida...");
-        setEsPresionado(true);
+        esPresionado = true;
     }
 }

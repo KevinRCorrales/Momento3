@@ -8,9 +8,11 @@ public class Ascensor {
     private Usuario usuario;
     private BotonAscensor[] botones;
     private BotonEmergencia botonEmergencia;
+    private BotonTiempoPuertas botonTiempoPuertas;
     private boolean subiendo;
 
-    public Ascensor(Piso pisoAscensor, Piso[] pisosEdificio, boolean enMovimiento, Puerta puerta, Usuario usuario, BotonAscensor[] botones, BotonEmergencia botonEmergencia, boolean subiendo) {
+    public Ascensor(Piso pisoAscensor, Piso[] pisosEdificio, boolean enMovimiento, Puerta puerta, Usuario usuario, BotonAscensor[] botones,
+                    BotonEmergencia botonEmergencia, BotonTiempoPuertas botonTiempoPuertas, boolean subiendo) {
         this.pisoAscensor = pisoAscensor;
         this.pisosEdificio = pisosEdificio;
         this.enMovimiento = enMovimiento;
@@ -18,17 +20,20 @@ public class Ascensor {
         this.usuario = usuario;
         this.botones = botones;
         this.botonEmergencia = botonEmergencia;
+        this.botonTiempoPuertas = botonTiempoPuertas;
         this.subiendo = subiendo;
     }
 
     public void recorrerPisos() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Atendiendo solicitud del usuario en el piso: " + usuario.getPisoActual().getNumero());
+        puerta.abrir();
         System.out.println("Entra al ascensor antes de que cierre...");
         for (BotonAscensor boton : botones) {
             System.out.println(boton.getPiso());
         }
         System.out.println(botonEmergencia);
+        System.out.println(botonTiempoPuertas);
         System.out.println("\nIngrese el piso al que quiere ir: ");
         boolean ingresoValido = false;
         do {
@@ -37,6 +42,9 @@ public class Ascensor {
                 botonEmergencia.presionar();
                 setEnMovimiento(false);
                 ingresoValido = true;
+            } else if (ingreso == -1) {
+                botonTiempoPuertas.presionar();
+                System.out.println("Ahora puede ingresar el piso:");
             } else if (ingreso < 0 || ingreso > botones.length) {
                 System.out.println("Piso no válido, vuelva a ingresar un piso válido:");
             } else {
