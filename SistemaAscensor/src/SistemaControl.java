@@ -41,7 +41,7 @@ public class SistemaControl {
         // Pequeña verificación de si el ascensor si detectó si está subiendo o bajando de manera correcta
         if (ascensorSubiendo) {
             System.out.println("El ascensor está subiendo");
-        } else {
+        } else if (ascensor.getEnMovimiento()) {
             System.out.println("El ascensor está bajando");
         }
 
@@ -49,13 +49,13 @@ public class SistemaControl {
             System.out.println("No hay más solicitudes...");
             //System.exit(0); // Salir de la ejecución sin errores
         } else {
-            // Continuar si hay más llamadas
+            // Continuar si hay más llamadas y si el ascensor no ha sido detenido por una emergencia
             while (quedanSolicitudes(pisoLlamadas)) {
                 pisoInicialAscensor = ascensor.getPisoAscensor();
                 System.out.println("Ascensor en el piso: " + pisoInicialAscensor.getNumero());
                 if (ascensorSubiendo) {
                     for (int i = 0; i < pisoLlamadas.length; i++) {
-                        if (pisoLlamadas[i] >= pisoInicialAscensor.getNumero() && pisoLlamadas[i] != 0) {
+                        if (pisoLlamadas[i] >= pisoInicialAscensor.getNumero() && pisoLlamadas[i] != 0 && ascensor.getEnMovimiento()) {
                             ascensor.setUsuario(usuarios[i]);
                             ascensor.recorrerPisos();
                             pisoLlamadas[i] = 0;
@@ -64,7 +64,7 @@ public class SistemaControl {
                     ascensor.setSubiendo(false); // después de subir cambiar la dirección
                 } else {
                     for (int i = 0; i < pisoLlamadas.length; i++) {
-                        if (pisoLlamadas[i] <= pisoInicialAscensor.getNumero() && pisoLlamadas[i] != 0) {
+                        if (pisoLlamadas[i] <= pisoInicialAscensor.getNumero() && pisoLlamadas[i] != 0 && ascensor.getEnMovimiento()) {
                             ascensor.setUsuario(usuarios[i]);
                             ascensor.recorrerPisos();
                             pisoLlamadas[i] = 0;
@@ -78,12 +78,24 @@ public class SistemaControl {
 
     public boolean quedanSolicitudes(int[] pisoLlamadas) {
         for (int pisoLlamada : pisoLlamadas) {
-            if (pisoLlamada != 0) {
+            if (pisoLlamada != 0 && ascensor.getEnMovimiento()) {
                 System.out.println("Aún hay solicitudes por atender...");
                 return true;
             }
         }
-        System.out.println("No hay más solicitudes...");
+        if (ascensor.getEnMovimiento()) {
+            System.out.println("No hay más solicitudes...");
+        }
+        ascensor.setEnMovimiento(false);
         return false;
+    }
+
+    public void atenderEmergencia() {
+        if (ascensor.getBotonEmergencia().senialPresionado()) {
+            System.out.println("Parando en el piso más cercano");
+            ascensor.setPisoAscensor(ascensor.getPisosEdificio()[ascensor.getPisoAscensor().getNumero() - 1]);
+            ascensor.getPuerta().abrir();
+            System.out.println("Por favor, salir del ascensor...");
+        }
     }
 }

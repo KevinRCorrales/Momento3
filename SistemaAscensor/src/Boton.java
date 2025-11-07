@@ -14,7 +14,7 @@ public class Boton {
         return esPresionado;
     }
 
-    public void apagarPresionado() {
-        esPresionado = false;
+    public void setEsPresionado(boolean esPresionado) {
+        this.esPresionado = esPresionado;
     }
 }

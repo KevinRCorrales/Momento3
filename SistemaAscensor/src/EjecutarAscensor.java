@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class EjecutarAscensor {
     public static void main(String[] args) {
         // Crear pisos para el edificio con sus botones
@@ -8,16 +6,14 @@ public class EjecutarAscensor {
         BotonAscensor[] botones = new BotonAscensor[pisos];
         for (int i = 0; i < pisos; i++) {
             // Iniciar todos los pisos de manera igual
-            pisoArray[i] = new Piso(i + 1, false, false, new BotonPiso(false));
-            if (i == 0) {
-                pisoArray[i].setEsPrimero(true);
-            } else if (i == 14) {
-                pisoArray[i].setEsUltimo(true);
-            }
+            pisoArray[i] = new Piso(i + 1, new BotonPiso(false));
         }
         for (int i = 0; i < pisos; i++) {
             botones[i] = new BotonAscensor(false, pisoArray[i]);
         }
+        // Crear botón de emergencia para el ascensor
+        BotonEmergencia botonEmergencia = new BotonEmergencia(false);
+
         // Crear usuarios y simular un piso existente para cada uno
         Usuario objUsuario1 = new Usuario(pisoArray[0]);
         // objUsuario2 y objUsuario3 simulan otros usuarios que solicitaron el ascensor más arriba que objUsuario1
@@ -27,7 +23,7 @@ public class EjecutarAscensor {
 
         // Crear ascensor y puerta
         Puerta puerta = new Puerta(false);
-        Ascensor ascensor = new Ascensor(pisoArray[6], pisoArray, false, puerta, objUsuario1, botones, false); // Simular un piso cualquiera para el objeto
+        Ascensor ascensor = new Ascensor(pisoArray[6], pisoArray, false, puerta, objUsuario1, botones, botonEmergencia, false); // Simular un piso cualquiera para el objeto
 
         // Control del ascensor
         SistemaControl objSistemaControl = new SistemaControl(usuarios, ascensor);
