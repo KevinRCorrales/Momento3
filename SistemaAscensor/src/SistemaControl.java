@@ -41,9 +41,8 @@ public class SistemaControl {
 
             // Movimiento del ascensor
             ascensor.setSubiendo(pisoUsuarioActual.getNumero() < usuarioActual.getPisoActual().getNumero());
-            boolean ascensorSubiendo = ascensor.getSubiendo();
             // Pequeña verificación de si el ascensor si detectó si está subiendo o bajando de manera correcta
-            if (ascensorSubiendo) {
+            if (ascensor.getSubiendo()) {
                 System.out.println("El ascensor está subiendo");
             } else if (ascensor.getEnMovimiento()) {
                 System.out.println("El ascensor está bajando");
@@ -57,7 +56,7 @@ public class SistemaControl {
                 while (quedanSolicitudes(pisoLlamadas)) {
                     pisoInicialAscensor = ascensor.getPisoAscensor();
                     System.out.println("Ascensor en el piso: " + pisoInicialAscensor.getNumero());
-                    if (ascensorSubiendo) {
+                    if (ascensor.getSubiendo()) {
                         for (int i = 0; i < pisoLlamadas.length; i++) {
                             // Verificar que el piso es mayor al actual, que no haya sido atendido y que el ascensor no haya sido detenido por emergencia o por daños
                             if (pisoLlamadas[i] >= pisoInicialAscensor.getNumero() && pisoLlamadas[i] != 0 && ascensor.getEnMovimiento() && !malEstado()) {
@@ -99,7 +98,8 @@ public class SistemaControl {
     }
 
     public void atenderEmergencia() {
-        if (ascensor.getBotonEmergencia().senialPresionado()) {
+        if (ascensor.getBotonEmergencia().senialPresionado() || malEstado()) {
+            System.out.println("SE DETECTÓ UN ELEMENTO DEFECTUOSO O SE PRESIONÓ EL BOTÓN DE EMERGENCIA!");
             System.out.println("Parando en el piso más cercano");
             ascensor.getPuerta().abrir();
             System.out.println("Por favor, salir del ascensor...");
