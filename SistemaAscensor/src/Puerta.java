@@ -7,6 +7,10 @@ public class Puerta {
         this.malEstado = malEstado;
     }
 
+    public boolean getAbierta() {
+        return abierta;
+    }
+
     public void abrir() {
         System.out.println("Se ha abierto la puerta");
         abierta = true;

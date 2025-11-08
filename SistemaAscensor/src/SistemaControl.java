@@ -101,7 +101,9 @@ public class SistemaControl {
         if (ascensor.getBotonEmergencia().senialPresionado() || malEstado()) {
             System.out.println("SE DETECTÓ UN ELEMENTO DEFECTUOSO O SE PRESIONÓ EL BOTÓN DE EMERGENCIA!");
             System.out.println("Parando en el piso más cercano");
-            ascensor.getPuerta().abrir();
+            if (!ascensor.getPuerta().getAbierta()) {
+                ascensor.getPuerta().abrir();
+            }
             System.out.println("Por favor, salir del ascensor...");
             System.out.println("Ascensor detenido en el piso: " + ascensor.getPisoAscensor().getNumero());
         }
